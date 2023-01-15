@@ -26,7 +26,7 @@ const articleSchema = {
 
 const Article = mongoose.model("Article",articleSchema);
 
-
+// this is called chained method.
 //=======================GET,POST,DELETE (all articles) ================================
 app.route("/articles")
 
@@ -96,10 +96,28 @@ app.route("/articles/:articleTitle")
             }
         }    
     )   
-}).delete();
-
-
-
+})
+.patch(function(request,response){
+    Article.update(
+        {title:request.params.articleTitle},
+        {$set:request.body},
+        function(error){
+            if (!error) {
+                response.send("Successfully updated article.");
+            } else {
+                response.send(error);
+            }
+        }
+    )  
+}).delete(function(request,response){
+    Article.deleteOne({title:request.params.articleTitle},function(error){
+        if (!error) {
+            response.send("Successfully deleted the corresponding article.")
+        }else{
+            response.send(error);
+        }
+    })
+});
 
 
 
