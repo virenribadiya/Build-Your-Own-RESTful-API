@@ -81,7 +81,22 @@ app.route("/articles/:articleTitle")
             response.send("No matching article.");
         }
     });
-}).put().delete();
+})
+.put(function(request,response){
+    console.log("enter!");
+    Article.update(
+        {title:request.params.articleTitle},
+        {title:request.body.title,content:request.body.content},
+        {overWrite:true},
+        function(error){
+            if (!error) {
+                response.send("Successfully updated the article.");
+            } else {
+                response.send(error);
+            }
+        }    
+    )   
+}).delete();
 
 
 
