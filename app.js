@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 
+
 mongoose.set('strictQuery', true);
 
 
@@ -25,13 +26,7 @@ const articleSchema = {
 
 const Article = mongoose.model("Article",articleSchema);
 
-
-
-
-
-//=======================================GET=====================================
-
-app.get("/articles",function(request,response){
+app.route("/articles").get(function(request,response){
     Article.find(function(error,foundArticles){
         if (error)
         {
@@ -42,16 +37,8 @@ app.get("/articles",function(request,response){
             response.send(foundArticles);  
         }
     })
-});
-
-
-
-
-
-
-//================================POST=====================================
-
-app.post("/articles",function(request,response){
+})
+.post(function(request,response){
     console.log(request.body.title);
     console.log(request.body.content);
 
@@ -61,21 +48,180 @@ app.post("/articles",function(request,response){
     });
 
     newArticle.save(function(error){
-        if (!error)
-        {
-            response.send("Successfully added a new article!!!");    
-        } 
-        else 
-        {
+        if (!error) {
+            response.send("Successfully added a new article!!!");
+        } else {
             response.send(error);
         }
     });
+})
+.delete(function(request,response){
+    Article.deleteMany(function(error){
+        if (!error) {
+            response.send("Successfully deleted all the articles!!!");
+        } else {
+            response.send(error);
+        }
+    })
+});
+
+
+app.listen(3000,function(){
+    console.log("Server is running at Port 3000!!");
 });
 
 
 
 
 
-app.listen(3000,function(){
-    console.log("Server is running at Port 3000!!");
-})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=======================================GET=====================================
+
+// app.get("/articles",function(request,response){
+//     Article.find(function(error,foundArticles){
+//         if (error)
+//         {
+//             console.log(error);    
+//         }
+//         else 
+//         {
+//             response.send(foundArticles);  
+//         }
+//     })
+// });
+
+
+
+
+
+
+//================================POST=====================================
+
+// app.post("/articles",function(request,response){
+//     console.log(request.body.title);
+//     console.log(request.body.content);
+
+//     const newArticle = new Article({
+//         title: request.body.title,
+//         content: request.body.content,
+//     });
+
+//     newArticle.save(function(error){
+//         if (!error) {
+//             response.send("Successfully added a new article!!!");
+//         } else {
+//             response.send(error);
+//         }
+//     });
+// });
+
+
+
+
+
+
+
+
+
+
+//=================================DELETE=================================
+
+// app.delete("/articles",function(request,response){
+//     Article.deleteMany(function(error){
+//         if (!error) {
+//             response.send("Successfully deleted all the articles!!!");
+//         } else {
+//             response.send(error);
+//         }
+//     })
+// });
+
+
+// app.listen(3000,function(){
+//     console.log("Server is running at Port 3000!!");
+// })
