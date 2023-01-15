@@ -26,7 +26,11 @@ const articleSchema = {
 
 const Article = mongoose.model("Article",articleSchema);
 
-app.route("/articles").get(function(request,response){
+
+//=======================GET,POST,DELETE (all articles) ================================
+app.route("/articles")
+
+.get(function(request,response){
     Article.find(function(error,foundArticles){
         if (error)
         {
@@ -64,35 +68,29 @@ app.route("/articles").get(function(request,response){
         }
     })
 });
+//==============================================================================
+
+//========================== GET,PUT,DELETE,PATCH (specific articles) ====================
+
+app.route("/articles/:articleTitle")
+.get(function(request,response){
+    Article.findOne({title:request.params.articleTitle},function(error,foundArticle){
+        if(foundArticle){
+            response.send(foundArticle);
+        } else {
+            response.send("No matching article.");
+        }
+    });
+}).put().delete();
+
+
+
+
 
 
 app.listen(3000,function(){
     console.log("Server is running at Port 3000!!");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
